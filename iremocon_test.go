@@ -29,12 +29,12 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("au error: %v", echo)
 	}
 
-	echo = iremocon.Is("1")
+	echo = iremocon.Is(1)
 	if echo != "*is;1\r\n" {
 		t.Errorf("is error: %v", echo)
 	}
 
-	echo = iremocon.Ic("1")
+	echo = iremocon.Ic(1)
 	if echo != "*ic;1\r\n" {
 		t.Errorf("ic error: %v", echo)
 	}
@@ -42,6 +42,31 @@ func TestIremocon(t *testing.T) {
 	echo = iremocon.Cc()
 	if echo != "*cc\r\n" {
 		t.Errorf("cc error: %v", echo)
+	}
+
+	echo = iremocon.Tm(1, 1577804400, 10)
+	if echo != "*tm;1;1577804400;10\r\n" {
+		t.Errorf("tm error: %v", echo)
+	}
+
+	echo = iremocon.Tl()
+	if echo != "*tl\r\n" {
+		t.Errorf("tl error: %v", echo)
+	}
+
+	echo = iremocon.Td(1)
+	if echo != "*td;1\r\n" {
+		t.Errorf("td error: %v", echo)
+	}
+
+	echo = iremocon.Ts(1577804400)
+	if echo != "*ts;1577804400\r\n" {
+		t.Errorf("ts error: %v", echo)
+	}
+
+	echo = iremocon.Tg()
+	if echo != "*tg\r\n" {
+		t.Errorf("tg error: %v", echo)
 	}
 
 	echo = iremocon.Vr()
