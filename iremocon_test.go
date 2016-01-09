@@ -1,9 +1,11 @@
 package iremocon
 
-import "net"
-import "testing"
-import "bufio"
-import "io"
+import (
+	"bufio"
+	"io"
+	"net"
+	"testing"
+)
 
 const laddr = ":50000"
 

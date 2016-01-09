@@ -1,14 +1,13 @@
 package iremocon
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"net"
+	"strconv"
+	"strings"
 )
-
-import "bufio"
-import "strconv"
-import "strings"
-import "errors"
 
 func Au(conn net.Conn) (string, error) {
 	res, err := Send(conn, "au")
