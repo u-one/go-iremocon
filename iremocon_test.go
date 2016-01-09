@@ -48,11 +48,10 @@ func TestIremocon(t *testing.T) {
 
 	conn, _ := net.Dial("tcp", laddr)
 	defer conn.Close()
-	iremocon := NewIremocon(conn)
 
 	var echo string
 	var err error
-	echo, err = iremocon.Au()
+	echo, err = Au(conn)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -60,7 +59,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("au error: %v", echo)
 	}
 
-	echo, err = iremocon.Is(1)
+	echo, err = Is(conn, 1)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -68,7 +67,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("is error: %v", echo)
 	}
 
-	echo, err = iremocon.Ic(1)
+	echo, err = Ic(conn, 1)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -76,7 +75,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("ic error: %v", echo)
 	}
 
-	echo, err = iremocon.Cc()
+	echo, err = Cc(conn)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -84,7 +83,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("cc error: %v", echo)
 	}
 
-	echo, err = iremocon.Tm(1, 1577804400, 10)
+	echo, err = Tm(conn, 1, 1577804400, 10)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -92,7 +91,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("tm error: %v", echo)
 	}
 
-	echo, err = iremocon.Tl()
+	echo, err = Tl(conn)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -100,7 +99,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("tl error: %v", echo)
 	}
 
-	echo, err = iremocon.Td(1)
+	echo, err = Td(conn, 1)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -108,7 +107,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("td error: %v", echo)
 	}
 
-	echo, err = iremocon.Ts(1577804400)
+	echo, err = Ts(conn, 1577804400)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -116,7 +115,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("ts error: %v", echo)
 	}
 
-	echo, err = iremocon.Tg()
+	echo, err = Tg(conn)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -124,7 +123,7 @@ func TestIremocon(t *testing.T) {
 		t.Errorf("tg error: %v", echo)
 	}
 
-	echo, err = iremocon.Vr()
+	echo, err = Vr(conn)
 	if err != nil {
 		t.Errorf("got error: %v", err)
 	}
@@ -140,56 +139,10 @@ func TestIremoconError(t *testing.T) {
 
 	conn, _ := net.Dial("tcp", laddr)
 	defer conn.Close()
-	iremocon := NewIremocon(conn)
 
 	var res string
 	var err error
-	res, err = iremocon.Au()
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Is(1)
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Ic(1)
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Cc()
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Tm(1, 1577804400, 10)
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Tl()
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Td(1)
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Ts(1577804400)
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Tg()
-	if err == nil {
-		t.Errorf("no error: %v", res)
-	}
-
-	res, err = iremocon.Vr()
+	res, err = Send(conn, "au")
 	if err == nil {
 		t.Errorf("no error: %v", res)
 	}

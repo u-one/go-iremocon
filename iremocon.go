@@ -1,80 +1,72 @@
 package iremocon
 
-import "fmt"
-import "net"
+import (
+	"fmt"
+	"net"
+)
+
 import "bufio"
 import "strconv"
 import "strings"
 import "errors"
 
-type Iremocon struct {
-	Conn net.Conn
-}
-
-func NewIremocon(conn net.Conn) *Iremocon {
-	i := &Iremocon{
-		Conn: conn,
-	}
-	return i
-}
-
-func (iremocon *Iremocon) Au() (string, error) {
-	res, err := iremocon.send("au")
+func Au(conn net.Conn) (string, error) {
+	res, err := Send(conn, "au")
 	return res, err
 }
 
-func (iremocon *Iremocon) Is(ch int) (string, error) {
-	res, err := iremocon.send("is", strconv.Itoa(ch))
+func Is(conn net.Conn, ch int) (string, error) {
+	res, err := Send(conn, "is", strconv.Itoa(ch))
 	return res, err
 }
 
-func (iremocon *Iremocon) Ic(ch int) (string, error) {
-	res, err := iremocon.send("ic", strconv.Itoa(ch))
+func Ic(conn net.Conn, ch int) (string, error) {
+	res, err := Send(conn, "ic", strconv.Itoa(ch))
 	return res, err
 }
 
-func (iremocon *Iremocon) Cc() (string, error) {
-	res, err := iremocon.send("cc")
+func Cc(conn net.Conn) (string, error) {
+	res, err := Send(conn, "cc")
 	return res, err
 }
 
-func (iremocon *Iremocon) Tm(ch int, time int, interval int) (string, error) {
-	res, err := iremocon.send("tm", strconv.Itoa(ch), strconv.Itoa(time), strconv.Itoa(interval))
+func Tm(conn net.Conn, ch int, time int, interval int) (string, error) {
+	res, err := Send(conn, "tm", strconv.Itoa(ch), strconv.Itoa(time), strconv.Itoa(interval))
 	return res, err
 }
 
-func (iremocon *Iremocon) Tl() (string, error) {
-	res, err := iremocon.send("tl")
+func Tl(conn net.Conn) (string, error) {
+	res, err := Send(conn, "tl")
 	return res, err
 }
 
-func (iremocon *Iremocon) Td(timerId int) (string, error) {
-	res, err := iremocon.send("td", strconv.Itoa(timerId))
+func Td(conn net.Conn, timerId int) (string, error) {
+	res, err := Send(conn, "td", strconv.Itoa(timerId))
 	return res, err
 }
 
-func (iremocon *Iremocon) Ts(time int) (string, error) {
-	res, err := iremocon.send("ts", strconv.Itoa(time))
+func Ts(conn net.Conn, time int) (string, error) {
+	res, err := Send(conn, "ts", strconv.Itoa(time))
 	return res, err
 }
 
-func (iremocon *Iremocon) Tg() (string, error) {
-	res, err := iremocon.send("tg")
+func Tg(conn net.Conn) (string, error) {
+	res, err := Send(conn, "tg")
 	return res, err
 }
 
-func (iremocon *Iremocon) Vr() (string, error) {
-	res, err := iremocon.send("vr")
+func Vr(conn net.Conn) (string, error) {
+	res, err := Send(conn, "vr")
 	return res, err
 }
 
-func (iremocon *Iremocon) send(command string, params ...string) (string, error) {
+func Send(conn net.Conn, command string, params ...string) (string, error) {
 	param := ""
 	for _, p := range params {
 		param += ";" + p
 	}
-	fmt.Fprintf(iremocon.Conn, "*%v%v\r\n", command, param)
-	res, err := bufio.NewReader(iremocon.Conn).ReadString('\n')
+	fmt.Fprintf(conn, "*%v%v\r\n", command, param)
+	res, err := bufio.NewReader(conn).ReadString('\n')
 	if err != nil {
 		return res, err
 	}
