@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-
+  "github.com/bash0C7/go-iremocon/lib"
 	"github.com/codegangsta/cli"
 )
 
@@ -19,6 +19,22 @@ func newApp() *cli.App {
 	app.Version = Version
 	app.Author = "bash0C7"
 	app.Email = "ksb.4038.nullpointer+github@gmail.com"
-	app.Commands = Commands
+	app.Commands = []cli.Command{
+		{
+			Name:    "au",
+			Usage:   "au command",
+			Action: func(c *cli.Context) {
+        iremocon.au
+				println("added task: ", c.Args())
+			},
+		},
+		{
+			Name:    "complete",
+			Usage:   "complete a task on the list",
+			Action: func(c *cli.Context) {
+				println("completed task: ", c.Args())
+			},
+		}
+	}
 	return app
 }
