@@ -26,11 +26,20 @@ func newApp() *cli.App {
 			Name:  "au",
 			Usage: "au command",
 			Action: func(c *cli.Context) {
-				conn, _ := net.Dial("tcp", ":50000")
+				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
 				defer conn.Close()
-
-				iremocon.Au(conn)
-				println("added task: ", c.Args())
+				ret, _ := iremocon.Au(conn)
+				println(ret, c.Args())
+			},
+		},
+		{
+			Name:  "vr",
+			Usage: "vr command",
+			Action: func(c *cli.Context) {
+				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
+				defer conn.Close()
+				ret, _ := iremocon.Vr(conn)
+				println(ret, c.Args())
 			},
 		},
 	}
