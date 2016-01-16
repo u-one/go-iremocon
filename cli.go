@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"os"
 
@@ -28,8 +29,12 @@ func newApp() *cli.App {
 			Action: func(c *cli.Context) {
 				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
 				defer conn.Close()
-				ret, _ := iremocon.Au(conn)
-				println(ret, c.Args())
+				ret, err := iremocon.Au(conn)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+				} else {
+					println(ret, c.Args())
+				}
 			},
 		},
 		{
@@ -38,8 +43,12 @@ func newApp() *cli.App {
 			Action: func(c *cli.Context) {
 				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
 				defer conn.Close()
-				ret, _ := iremocon.Vr(conn)
-				println(ret, c.Args())
+				ret, err := iremocon.Vr(conn)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+				} else {
+					println(ret, c.Args())
+				}
 			},
 		},
 	}
