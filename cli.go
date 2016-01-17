@@ -13,9 +13,15 @@ var Version string = "0.0.0"
 
 func action(c *cli.Context, iremoconFunc func(net.Conn, []string) (string, error)) {
 	network := "tcp"
-	address := "10.0.1.200:51013"
+	address := c.String("host") + ":" + c.String("port") //"10.0.1.200:51013"
+	println(c.String("host"))
+	println(c.String("port"))
 
-	conn, _ := net.Dial(network, address)
+	conn, err := net.Dial(network, address)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
 	defer conn.Close()
 	ret, err := iremoconFunc(conn, c.Args())
 	if err != nil {
@@ -36,6 +42,18 @@ func newApp() *cli.App {
 	app.Version = Version
 	app.Author = "bash0C7"
 	app.Email = "ksb.4038.nullpointer+github@gmail.com"
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "host",
+			Value: "",
+			Usage: "iRemocon host",
+		},
+		cli.StringFlag{
+			Name:  "port",
+			Value: "51013",
+			Usage: "iRemocon port",
+		},
+	}
 	app.Commands = []cli.Command{
 		{
 			Name:  "au",
