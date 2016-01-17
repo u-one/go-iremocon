@@ -11,6 +11,20 @@ import (
 
 var Version string = "0.0.0"
 
+func action(c *cli.Context, iremoconFunc func(net.Conn, []string) (string, error)) {
+	network := "tcp"
+	address := "10.0.1.200:51013"
+
+	conn, _ := net.Dial(network, address)
+	defer conn.Close()
+	ret, err := iremoconFunc(conn, c.Args())
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	} else {
+		println(ret, c.Args())
+	}
+}
+
 func main() {
 	newApp().Run(os.Args)
 }
@@ -27,28 +41,22 @@ func newApp() *cli.App {
 			Name:  "au",
 			Usage: "au command",
 			Action: func(c *cli.Context) {
-				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
-				defer conn.Close()
-				ret, err := iremocon.Au(conn)
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				} else {
-					println(ret, c.Args())
+				f := func(conn net.Conn, args []string) (string, error) {
+					//a := args[0]
+					return iremocon.Au(conn) //引数は？
 				}
+				action(c, f)
 			},
 		},
 		{
 			Name:  "vr",
 			Usage: "vr command",
 			Action: func(c *cli.Context) {
-				conn, _ := net.Dial("tcp", "10.0.1.200:51013")
-				defer conn.Close()
-				ret, err := iremocon.Vr(conn)
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				} else {
-					println(ret, c.Args())
+				f := func(conn net.Conn, args []string) (string, error) {
+					//a := args[0]
+					return iremocon.Vr(conn) //引数は？
 				}
+				action(c, f)
 			},
 		},
 	}
