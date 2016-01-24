@@ -67,12 +67,21 @@ func newApp() *cli.App {
 			},
 		},
 		{
+			Name:  "tg",
+			Usage: "tg command",
+			Action: func(c *cli.Context) {
+				f := func(conn net.Conn, args []string) (string, error) {
+					return iremocon.Tg(conn)
+				}
+				action(c, f)
+			},
+		},
+		{
 			Name:  "vr",
 			Usage: "vr command",
 			Action: func(c *cli.Context) {
 				f := func(conn net.Conn, args []string) (string, error) {
-					//a := args[0]
-					return iremocon.Vr(conn) //引数は？
+					return iremocon.Vr(conn)
 				}
 				action(c, f)
 			},
