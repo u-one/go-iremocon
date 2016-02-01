@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 
 	"github.com/bash0C7/go-iremocon/iremocon"
 	"github.com/codegangsta/cli"
@@ -13,9 +14,12 @@ var Version string = "0.0.0"
 
 func action(c *cli.Context, iremoconFunc func(net.Conn, []string) (string, error)) {
 	network := "tcp"
-	address := c.String("host") + ":" + c.String("port") //"10.0.1.200:51013"
+	//	address := c.String("host") + ":" + c.String("port") //"10.0.1.200:51013"
+	address := "10.0.1.200:51013"
+	println("===========================")
 	println(c.String("host"))
 	println(c.String("port"))
+	println("===========================")
 
 	conn, err := net.Dial(network, address)
 	if err != nil {
@@ -67,12 +71,41 @@ func newApp() *cli.App {
 			},
 		},
 		{
+			Name:  "is",
+			Usage: "is command",
+			Action: func(c *cli.Context) {
+				f := func(conn net.Conn, args []string) (string, error) {
+					//a := args[0]
+					println(args)
+					return "", nil
+					ch, err := strconv.Atoi(args[0])
+					if err != nil {
+						panic(err)
+					}
+					return iremocon.Is(conn, ch)
+				}
+				action(c, f)
+			},
+		},
+		{
+			Name:  "tl",
+			Usage: "tl command",
+			Action: func(c *cli.Context) {
+				f := func(conn net.Conn, args []string) (string, error) {
+					return iremocon.Tl(conn)
+				}
+
+				action(c, f)
+			},
+		},
+		{
 			Name:  "tg",
 			Usage: "tg command",
 			Action: func(c *cli.Context) {
 				f := func(conn net.Conn, args []string) (string, error) {
 					return iremocon.Tg(conn)
 				}
+
 				action(c, f)
 			},
 		},
