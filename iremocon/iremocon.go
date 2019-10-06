@@ -59,6 +59,26 @@ func Vr(conn net.Conn) (string, error) {
 	return res, err
 }
 
+func Li(conn net.Conn) (string, error) {
+	res, err := Send(conn, "li")
+	return res, err
+}
+
+func Hu(conn net.Conn) (string, error) {
+	res, err := Send(conn, "hu")
+	return res, err
+}
+
+func Te(conn net.Conn) (string, error) {
+	res, err := Send(conn, "te")
+	return res, err
+}
+
+func Se(conn net.Conn) (string, error) {
+	res, err := Send(conn, "se")
+	return res, err
+}
+
 func Send(conn net.Conn, command string, params ...string) (string, error) {
 	param := ""
 	for _, p := range params {
